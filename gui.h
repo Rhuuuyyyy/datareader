@@ -18,7 +18,7 @@
 #define ID_EDIT_INPUT 202
 #define ID_STATUSBAR 203
 
-/* Estrutura global para compartilhar dados entre funções */
+/* Estrutura global para compartilhar dados entre funcoes */
 typedef struct {
     NoCategoria* lista_categorias;
     HWND hwndMain;
@@ -27,7 +27,7 @@ typedef struct {
     bool dados_modificados;
 } AppData;
 
-/* Funções da GUI */
+/* Funcoes da GUI */
 void InicializarGUI(HINSTANCE hInstance);
 LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 void CriarControles(HWND hwnd);
@@ -36,7 +36,7 @@ void AdicionarItemListBox(HWND hwndListBox, const char* texto);
 char* PedirEntrada(HWND hwnd, const char* titulo, const char* mensagem);
 void MostrarMensagem(HWND hwnd, const char* titulo, const char* mensagem);
 
-/* Funções de ação dos botões */
+/* Funcoes de acao dos botoes */
 void OnListarCategorias(AppData* app);
 void OnListarAlimentos(AppData* app);
 void OnListarPorEnergia(AppData* app);

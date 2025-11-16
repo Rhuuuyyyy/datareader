@@ -1,5 +1,5 @@
 /******************************************************************************
- * DIALOGO.C - Sistema de Diálogos Modais Robusto
+ * DIALOGO.C - Sistema de Dialogos Modais Robusto
  *
  * Usa PeekMessage para evitar bloquear o loop principal
  *****************************************************************************/
@@ -15,13 +15,13 @@
 #define ID_BTN_CANCELAR       303
 #define ID_LISTBOX_CATEGORIAS 304
 
-/* Variáveis globais para comunicação */
+/* Variaveis globais para comunicacao */
 static char g_texto_resultado[256];
 static char g_categoria_selecionada[256];
 static BOOL g_dialogo_confirmado = FALSE;
 
 /******************************************************************************
- * PROCEDIMENTO DO DIÁLOGO DE TEXTO
+ * PROCEDIMENTO DO DIALOGO DE TEXTO
  *****************************************************************************/
 LRESULT CALLBACK DialogoTextoProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     switch (msg) {
@@ -56,7 +56,7 @@ LRESULT CALLBACK DialogoTextoProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPa
 }
 
 /******************************************************************************
- * PROCEDIMENTO DO DIÁLOGO DE CATEGORIA
+ * PROCEDIMENTO DO DIALOGO DE CATEGORIA
  *****************************************************************************/
 LRESULT CALLBACK DialogoCategoriaProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
     switch (msg) {
@@ -116,7 +116,7 @@ LRESULT CALLBACK DialogoCategoriaProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM
 }
 
 /******************************************************************************
- * MostrarDialogoTexto - Usa PeekMessage para não bloquear
+ * MostrarDialogoTexto - Usa PeekMessage para nao bloquear
  *****************************************************************************/
 BOOL MostrarDialogoTexto(HWND hwndParent, const char* titulo,
                          const char* mensagem, char* buffer, int tamanho) {
@@ -186,7 +186,7 @@ BOOL MostrarDialogoTexto(HWND hwndParent, const char* titulo,
             }
         }
 
-        /* Pequeno sleep para não consumir 100% da CPU */
+        /* Pequeno sleep para nao consumir 100% da CPU */
         Sleep(10);
     }
 
@@ -216,7 +216,7 @@ BOOL MostrarDialogoNumero(HWND hwndParent, const char* titulo,
 }
 
 /******************************************************************************
- * MostrarDialogoCategoria - Usa PeekMessage para não bloquear
+ * MostrarDialogoCategoria - Usa PeekMessage para nao bloquear
  *****************************************************************************/
 BOOL MostrarDialogoCategoria(HWND hwndParent, void* lista_categorias,
                              char* categoria_selecionada) {
@@ -296,7 +296,7 @@ BOOL MostrarDialogoCategoria(HWND hwndParent, void* lista_categorias,
             }
         }
 
-        /* Pequeno sleep para não consumir 100% da CPU */
+        /* Pequeno sleep para nao consumir 100% da CPU */
         Sleep(10);
     }
 

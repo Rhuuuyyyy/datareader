@@ -6,7 +6,7 @@
 #define MAX_DESCRICAO 100
 #define MAX_CATEGORIA 50
 
-/* Enumerado para as 15 categorias de alimentos conforme especificação */
+/* Enumerado para as 15 categorias de alimentos conforme especificacao */
 typedef enum {
     ALIMENTOS_PREPARADOS,
     BEBIDAS,
@@ -25,7 +25,7 @@ typedef enum {
     VERDURAS_HORTALICAS_E_DERIVADOS
 } TipoCategoria;
 
-/* Estrutura para armazenar alimento lido do arquivo binário */
+/* Estrutura para armazenar alimento lido do arquivo binario */
 typedef struct {
     int numero;
     char descricao[MAX_DESCRICAO];
@@ -36,7 +36,7 @@ typedef struct {
     char categoria[MAX_CATEGORIA];
 } AlimentoArquivo;
 
-/* Nó de alimento em lista ligada */
+/* No de alimento em lista ligada */
 typedef struct NoAlimento {
     int numero;
     char descricao[MAX_DESCRICAO];
@@ -47,7 +47,7 @@ typedef struct NoAlimento {
     struct NoAlimento* proximo;
 } NoAlimento;
 
-/* Nó de categoria em lista ligada */
+/* No de categoria em lista ligada */
 typedef struct NoCategoria {
     char nome[MAX_CATEGORIA];
     TipoCategoria tipo;
@@ -57,7 +57,7 @@ typedef struct NoCategoria {
     struct NoCategoria* proximo;
 } NoCategoria;
 
-/* Nó de árvore binária de indexação */
+/* No de arvore binaria de indexacao */
 typedef struct NoArvore {
     double chave;
     NoAlimento* alimento;

@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-/* Cria um novo nó de alimento */
+/* Cria um novo no de alimento */
 NoAlimento* criar_no_alimento(AlimentoArquivo* alimento_arquivo) {
     NoAlimento* novo = (NoAlimento*)malloc(sizeof(NoAlimento));
     if (novo == NULL) {
@@ -25,7 +25,7 @@ NoAlimento* criar_no_alimento(AlimentoArquivo* alimento_arquivo) {
     return novo;
 }
 
-/* Insere um alimento em ordem alfabética na lista de alimentos */
+/* Insere um alimento em ordem alfabetica na lista de alimentos */
 NoAlimento* inserir_alimento_ordenado(NoAlimento* lista, NoAlimento* novo_alimento) {
     if (lista == NULL || strcmp(novo_alimento->descricao, lista->descricao) < 0) {
         novo_alimento->proximo = lista;
@@ -42,7 +42,7 @@ NoAlimento* inserir_alimento_ordenado(NoAlimento* lista, NoAlimento* novo_alimen
     return lista;
 }
 
-/* Cria um novo nó de categoria */
+/* Cria um novo no de categoria */
 NoCategoria* criar_no_categoria(const char* nome) {
     NoCategoria* nova = (NoCategoria*)malloc(sizeof(NoCategoria));
     if (nova == NULL) {
@@ -61,7 +61,7 @@ NoCategoria* criar_no_categoria(const char* nome) {
     return nova;
 }
 
-/* Insere uma categoria em ordem alfabética na lista de categorias */
+/* Insere uma categoria em ordem alfabetica na lista de categorias */
 NoCategoria* inserir_categoria_ordenada(NoCategoria* lista, NoCategoria* nova_categoria) {
     if (lista == NULL || strcmp(nova_categoria->nome, lista->nome) < 0) {
         nova_categoria->proximo = lista;
@@ -90,7 +90,7 @@ NoCategoria* buscar_categoria(NoCategoria* lista, const char* nome) {
     return NULL;
 }
 
-/* Constrói as árvores binárias de indexação para uma categoria */
+/* Constroi as arvores binarias de indexacao para uma categoria */
 void construir_arvores_categoria(NoCategoria* categoria) {
     if (categoria == NULL) {
         return;
@@ -108,7 +108,7 @@ void construir_arvores_categoria(NoCategoria* categoria) {
     }
 }
 
-/* Reconstrói as árvores binárias de uma categoria */
+/* Reconstroi as arvores binarias de uma categoria */
 void reconstruir_arvores_categoria(NoCategoria* categoria) {
     if (categoria == NULL) {
         return;
@@ -186,7 +186,7 @@ NoCategoria* remover_categoria(NoCategoria* lista, const char* nome) {
     return lista;
 }
 
-/* Libera a memória de todos os alimentos de uma categoria */
+/* Libera a memoria de todos os alimentos de uma categoria */
 void liberar_alimentos(NoAlimento* lista) {
     NoAlimento* atual = lista;
     while (atual != NULL) {
@@ -196,7 +196,7 @@ void liberar_alimentos(NoAlimento* lista) {
     }
 }
 
-/* Libera a memória de todas as categorias */
+/* Libera a memoria de todas as categorias */
 void liberar_categorias(NoCategoria* lista) {
     NoCategoria* atual = lista;
     while (atual != NULL) {

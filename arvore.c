@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/* Cria um novo nó de árvore binária */
+/* Cria um novo no de arvore binaria */
 NoArvore* criar_no_arvore(double chave, NoAlimento* alimento) {
     NoArvore* novo = (NoArvore*)malloc(sizeof(NoArvore));
     if (novo == NULL) {
@@ -16,7 +16,7 @@ NoArvore* criar_no_arvore(double chave, NoAlimento* alimento) {
     return novo;
 }
 
-/* Insere um nó na árvore binária mantendo a propriedade de BST */
+/* Insere um no na arvore binaria mantendo a propriedade de BST */
 NoArvore* inserir_na_arvore(NoArvore* raiz, double chave, NoAlimento* alimento) {
     if (raiz == NULL) {
         return criar_no_arvore(chave, alimento);
@@ -31,7 +31,7 @@ NoArvore* inserir_na_arvore(NoArvore* raiz, double chave, NoAlimento* alimento) 
     return raiz;
 }
 
-/* Percorre a árvore em ordem decrescente (direita-raiz-esquerda) */
+/* Percorre a arvore em ordem decrescente (direita-raiz-esquerda) */
 void percorrer_decrescente(NoArvore* raiz) {
     if (raiz == NULL) {
         return;
@@ -46,7 +46,7 @@ void percorrer_decrescente(NoArvore* raiz) {
     percorrer_decrescente(raiz->esquerda);
 }
 
-/* Percorre a árvore buscando valores em um intervalo [min, max] */
+/* Percorre a arvore buscando valores em um intervalo [min, max] */
 void percorrer_intervalo(NoArvore* raiz, double min, double max) {
     if (raiz == NULL) {
         return;
@@ -69,7 +69,7 @@ void percorrer_intervalo(NoArvore* raiz, double min, double max) {
     }
 }
 
-/* Libera toda a memória alocada pela árvore */
+/* Libera toda a memoria alocada pela arvore */
 void liberar_arvore(NoArvore* raiz) {
     if (raiz == NULL) {
         return;
@@ -80,7 +80,7 @@ void liberar_arvore(NoArvore* raiz) {
     free(raiz);
 }
 
-/* Função auxiliar para encontrar o menor nó (mais à esquerda) */
+/* Funcao auxiliar para encontrar o menor no (mais a esquerda) */
 static NoArvore* encontrar_minimo(NoArvore* raiz) {
     NoArvore* atual = raiz;
     while (atual != NULL && atual->esquerda != NULL) {
@@ -89,20 +89,20 @@ static NoArvore* encontrar_minimo(NoArvore* raiz) {
     return atual;
 }
 
-/* Remove um alimento específico da árvore e retorna a nova raiz */
+/* Remove um alimento especifico da arvore e retorna a nova raiz */
 NoArvore* remover_da_arvore(NoArvore* raiz, NoAlimento* alimento) {
     if (raiz == NULL) {
         return NULL;
     }
 
     if (raiz->alimento == alimento) {
-        /* Caso 1: Nó sem filhos */
+        /* Caso 1: No sem filhos */
         if (raiz->esquerda == NULL && raiz->direita == NULL) {
             free(raiz);
             return NULL;
         }
 
-        /* Caso 2: Nó com apenas um filho */
+        /* Caso 2: No com apenas um filho */
         if (raiz->esquerda == NULL) {
             NoArvore* temp = raiz->direita;
             free(raiz);
@@ -114,7 +114,7 @@ NoArvore* remover_da_arvore(NoArvore* raiz, NoAlimento* alimento) {
             return temp;
         }
 
-        /* Caso 3: Nó com dois filhos */
+        /* Caso 3: No com dois filhos */
         NoArvore* sucessor = encontrar_minimo(raiz->direita);
         raiz->chave = sucessor->chave;
         raiz->alimento = sucessor->alimento;

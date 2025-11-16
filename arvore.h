@@ -3,22 +3,22 @@
 
 #include "tipos.h"
 
-/* Cria um novo nó de árvore binária */
+/* Cria um novo no de arvore binaria */
 NoArvore* criar_no_arvore(double chave, NoAlimento* alimento);
 
-/* Insere um nó na árvore binária mantendo a propriedade de BST */
+/* Insere um no na arvore binaria mantendo a propriedade de BST */
 NoArvore* inserir_na_arvore(NoArvore* raiz, double chave, NoAlimento* alimento);
 
-/* Percorre a árvore em ordem decrescente (direita-raiz-esquerda) */
+/* Percorre a arvore em ordem decrescente (direita-raiz-esquerda) */
 void percorrer_decrescente(NoArvore* raiz);
 
-/* Percorre a árvore buscando valores em um intervalo [min, max] */
+/* Percorre a arvore buscando valores em um intervalo [min, max] */
 void percorrer_intervalo(NoArvore* raiz, double min, double max);
 
-/* Libera toda a memória alocada pela árvore */
+/* Libera toda a memoria alocada pela arvore */
 void liberar_arvore(NoArvore* raiz);
 
-/* Remove um alimento específico da árvore e retorna a nova raiz */
+/* Remove um alimento especifico da arvore e retorna a nova raiz */
 NoArvore* remover_da_arvore(NoArvore* raiz, NoAlimento* alimento);
 
 #endif
