@@ -8,7 +8,7 @@
 #define MAX_DESCRICAO 100
 #define MAX_CATEGORIA 50
 
-/* Estrutura para armazenar alimento em memória (com ponteiros dinâmicos) */
+/* Estrutura para armazenar alimento em memoria (com ponteiros dinamicos) */
 typedef struct {
     int numero;
     char* descricao;
@@ -19,7 +19,7 @@ typedef struct {
     char* categoria;
 } Alimento;
 
-/* Estrutura para armazenar alimento em arquivo binário (tamanho fixo) */
+/* Estrutura para armazenar alimento em arquivo binario (tamanho fixo) */
 typedef struct {
     int numero;
     char descricao[MAX_DESCRICAO];
@@ -31,7 +31,7 @@ typedef struct {
 } AlimentoArquivo;
 
 /* ===================================================================================
-   FUNÇÃO PARA LER OS DADOS DO ARQUIVO .JSON ORIGINAL
+   FUNCAO PARA LER OS DADOS DO ARQUIVO .JSON ORIGINAL
    =================================================================================== */
 Alimento** ler_alimentos_do_json(const char* arquivo_json, int* total_alimentos) {
     FILE* arquivo = fopen(arquivo_json, "r");
@@ -40,7 +40,7 @@ Alimento** ler_alimentos_do_json(const char* arquivo_json, int* total_alimentos)
         return NULL;
     }
 
-    /* Lê o conteúdo inteiro do arquivo para a memória */
+    /* Le o conteudo inteiro do arquivo para a memoria */
     fseek(arquivo, 0, SEEK_END);
     long tamanho = ftell(arquivo);
     fseek(arquivo, 0, SEEK_SET);
@@ -106,7 +106,7 @@ Alimento** ler_alimentos_do_json(const char* arquivo_json, int* total_alimentos)
 }
 
 /* ===================================================================================
-   FUNÇÃO PARA SALVAR OS DADOS EM BINÁRIO
+   FUNCAO PARA SALVAR OS DADOS EM BINARIO
    =================================================================================== */
 bool salvar_em_binario(Alimento** array_memoria, int total_alimentos, const char* arquivo_bin) {
     FILE* f_binario = fopen(arquivo_bin, "wb");
@@ -139,7 +139,7 @@ bool salvar_em_binario(Alimento** array_memoria, int total_alimentos, const char
 }
 
 /* ===================================================================================
-   FUNÇÃO MAIN
+   FUNCAO MAIN
    =================================================================================== */
 int main() {
     int total_alimentos = 0;
@@ -157,12 +157,12 @@ int main() {
     }
     printf("%d alimentos lidos com sucesso.\n\n", total_alimentos);
 
-    /* 2. SALVAR OS DADOS NO ARQUIVO BINÁRIO */
+    /* 2. SALVAR OS DADOS NO ARQUIVO BINARIO */
     if (!salvar_em_binario(array_memoria, total_alimentos, bin_filename)) {
         fprintf(stderr, "Falha ao salvar o arquivo binario.\n");
     }
 
-    /* 3. LIBERAR MEMÓRIA */
+    /* 3. LIBERAR MEMORIA */
     printf("\nLimpando memoria...\n");
     for (int i = 0; i < total_alimentos; i++) {
         free(array_memoria[i]->descricao);

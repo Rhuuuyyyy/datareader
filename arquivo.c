@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-/* Lê o arquivo binário e constrói as listas ligadas de categorias e alimentos */
+/* Le o arquivo binario e constroi as listas ligadas de categorias e alimentos */
 NoCategoria* carregar_dados_binario(const char* arquivo_bin) {
     FILE* arquivo = fopen(arquivo_bin, "rb");
     if (arquivo == NULL) {
@@ -39,7 +39,7 @@ NoCategoria* carregar_dados_binario(const char* arquivo_bin) {
     return lista_categorias;
 }
 
-/* Salva os dados atualizados no arquivo binário */
+/* Salva os dados atualizados no arquivo binario */
 bool salvar_dados_binario(NoCategoria* lista_categorias, const char* arquivo_bin) {
     FILE* arquivo = fopen(arquivo_bin, "wb");
     if (arquivo == NULL) {
