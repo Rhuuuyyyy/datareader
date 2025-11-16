@@ -56,7 +56,27 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
         DispatchMessage(&msg);
     }
 
-    /* Liberar memória */
+    /* Salvar dados se foram modificados */
+    if (appData.dados_modificados) {
+        MessageBox(NULL,
+            "Salvando alteracoes no arquivo dados.bin...",
+            "Salvando",
+            MB_OK | MB_ICONINFORMATION);
+
+        if (salvar_dados_binario(lista_categorias, arquivo_bin)) {
+            MessageBox(NULL,
+                "Arquivo atualizado com sucesso!",
+                "Sucesso",
+                MB_OK | MB_ICONINFORMATION);
+        } else {
+            MessageBox(NULL,
+                "Erro ao salvar arquivo!",
+                "Erro",
+                MB_OK | MB_ICONERROR);
+        }
+    }
+
+    /* Liberar memoria */
     liberar_categorias(lista_categorias);
 
     return (int)msg.wParam;
