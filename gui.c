@@ -1,12 +1,14 @@
 #include "gui.h"
 #include "categoria.h"
 #include "arvore.h"
+#include "dialogo.h"
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <commctrl.h>
 
 static AppData* g_appData = NULL;
-static HFONT g_hFontMono = NULL; /* Fonte monoespaçada para tabelas */
+static HFONT g_hFontMono = NULL;
 static HFONT g_hFontNormal = NULL;
 
 /* Limpa a caixa de listagem */
@@ -63,7 +65,7 @@ void CriarControles(HWND hwnd) {
     SendMessage(hwndTitulo, WM_SETFONT, (WPARAM)g_hFontNormal, TRUE);
 
     /* Subtitulo */
-    HWND hwndSubtitulo = CreateWindow(
+    CreateWindow(
         "STATIC", "Trabalho de Programacao Imperativa - RA2",
         WS_VISIBLE | WS_CHILD | SS_CENTER,
         10, 45, 980, 20,
@@ -123,7 +125,7 @@ void CriarControles(HWND hwnd) {
         10, 185, 990, 430,
         hwnd, NULL, NULL, NULL);
 
-    /* ListBox para resultados com fonte monoespaçada */
+    /* ListBox para resultados com fonte monoespac ada */
     g_appData->hwndListBox = CreateWindowEx(
         WS_EX_CLIENTEDGE,
         "LISTBOX", NULL,
@@ -179,15 +181,20 @@ void OnListarCategorias(AppData* app) {
 
 /* Listar alimentos de uma categoria */
 void OnListarAlimentos(AppData* app) {
-    if (app->lista_categorias == NULL) {
-        AdicionarItemListBox(app->hwndListBox, "Nenhuma categoria encontrada.");
+    char categoria[MAX_CATEGORIA];
+
+    if (!MostrarDialogoCategoria(app->hwndMain, app->lista_categorias, categoria)) {
         return;
     }
 
-    /* Usar primeira categoria como exemplo - idealmente pedir ao usuario */
-    NoCategoria* cat = app->lista_categorias;
+    NoCategoria* cat = buscar_categoria(app->lista_categorias, categoria);
 
     LimparListBox(app->hwndListBox);
+
+    if (cat == NULL) {
+        AdicionarItemListBox(app->hwndListBox, "Categoria nao encontrada!");
+        return;
+    }
 
     char buffer[512];
 
@@ -236,11 +243,43 @@ void AdicionarNosArvoreDecrescente(NoArvore* raiz, HWND hwndListBox) {
     AdicionarNosArvoreDecrescente(raiz->esquerda, hwndListBox);
 }
 
+/* Funcao recursiva para adicionar nos da arvore dentro de um intervalo */
+void AdicionarNosIntervalo(NoArvore* raiz, HWND hwndListBox, double min, double max) {
+    if (raiz == NULL) return;
+
+    if (raiz->chave > min) {
+        AdicionarNosIntervalo(raiz->esquerda, hwndListBox, min, max);
+    }
+
+    if (raiz->chave >= min && raiz->chave <= max) {
+        char buffer[512];
+        sprintf(buffer, " %3d | %-50s | %4d kcal | %6.1f g",
+                raiz->alimento->numero,
+                raiz->alimento->descricao,
+                raiz->alimento->energia_kcal,
+                raiz->alimento->proteina);
+        AdicionarItemListBox(hwndListBox, buffer);
+    }
+
+    if (raiz->chave < max) {
+        AdicionarNosIntervalo(raiz->direita, hwndListBox, min, max);
+    }
+}
+
 /* Listar por energia decrescente */
 void OnListarPorEnergia(AppData* app) {
-    if (app->lista_categorias == NULL) return;
+    char categoria[MAX_CATEGORIA];
 
-    NoCategoria* cat = app->lista_categorias;
+    if (!MostrarDialogoCategoria(app->hwndMain, app->lista_categorias, categoria)) {
+        return;
+    }
+
+    NoCategoria* cat = buscar_categoria(app->lista_categorias, categoria);
+
+    if (cat == NULL) {
+        MostrarMensagem(app->hwndMain, "Erro", "Categoria nao encontrada!");
+        return;
+    }
 
     LimparListBox(app->hwndListBox);
 
@@ -267,9 +306,18 @@ void OnListarPorEnergia(AppData* app) {
 
 /* Listar por proteina decrescente */
 void OnListarPorProteina(AppData* app) {
-    if (app->lista_categorias == NULL) return;
+    char categoria[MAX_CATEGORIA];
 
-    NoCategoria* cat = app->lista_categorias;
+    if (!MostrarDialogoCategoria(app->hwndMain, app->lista_categorias, categoria)) {
+        return;
+    }
+
+    NoCategoria* cat = buscar_categoria(app->lista_categorias, categoria);
+
+    if (cat == NULL) {
+        MostrarMensagem(app->hwndMain, "Erro", "Categoria nao encontrada!");
+        return;
+    }
 
     LimparListBox(app->hwndListBox);
 
@@ -294,29 +342,211 @@ void OnListarPorProteina(AppData* app) {
     SetWindowText(app->hwndStatus, "Alimentos ordenados por proteina (maior -> menor).");
 }
 
-/* Stubs para outras funcoes */
+/* Filtrar por intervalo de energia */
 void OnIntervaloEnergia(AppData* app) {
-    MostrarMensagem(app->hwndMain, "Em desenvolvimento",
-        "Funcao de intervalo de energia sera implementada em breve!\n\n"
-        "Por enquanto, use as opcoes 1-4 que estao completas.");
+    char categoria[MAX_CATEGORIA];
+    double min = 0.0;
+    double max = 0.0;
+
+    if (!MostrarDialogoCategoria(app->hwndMain, app->lista_categorias, categoria)) {
+        return;
+    }
+
+    if (!MostrarDialogoNumero(app->hwndMain, "Energia Minima",
+            "Digite o valor minimo de energia (kcal):", &min)) {
+        return;
+    }
+
+    if (!MostrarDialogoNumero(app->hwndMain, "Energia Maxima",
+            "Digite o valor maximo de energia (kcal):", &max)) {
+        return;
+    }
+
+    NoCategoria* cat = buscar_categoria(app->lista_categorias, categoria);
+
+    if (cat == NULL) {
+        MostrarMensagem(app->hwndMain, "Erro", "Categoria nao encontrada!");
+        return;
+    }
+
+    LimparListBox(app->hwndListBox);
+
+    char buffer[512];
+
+    AdicionarItemListBox(app->hwndListBox, "");
+    AdicionarItemListBox(app->hwndListBox, "+========================================================================+");
+    sprintf(buffer, "|  %-70s|", cat->nome);
+    AdicionarItemListBox(app->hwndListBox, buffer);
+    sprintf(buffer, "|  FILTRO: Energia entre %.0f e %.0f kcal                                      ", min, max);
+    buffer[73] = '|';
+    buffer[74] = '\0';
+    AdicionarItemListBox(app->hwndListBox, buffer);
+    AdicionarItemListBox(app->hwndListBox, "+========================================================================+");
+    AdicionarItemListBox(app->hwndListBox, "");
+
+    AdicionarCabecalhoTabela(app->hwndListBox);
+
+    if (cat->arvore_energia != NULL) {
+        AdicionarNosIntervalo(cat->arvore_energia, app->hwndListBox, min, max);
+    }
+
+    AdicionarSeparador(app->hwndListBox, 110);
+
+    sprintf(buffer, "Filtro aplicado: energia entre %.0f e %.0f kcal.", min, max);
+    SetWindowText(app->hwndStatus, buffer);
 }
 
+/* Filtrar por intervalo de proteina */
 void OnIntervaloProteina(AppData* app) {
-    MostrarMensagem(app->hwndMain, "Em desenvolvimento",
-        "Funcao de intervalo de proteina sera implementada em breve!\n\n"
-        "Por enquanto, use as opcoes 1-4 que estao completas.");
+    char categoria[MAX_CATEGORIA];
+    double min = 0.0;
+    double max = 0.0;
+
+    if (!MostrarDialogoCategoria(app->hwndMain, app->lista_categorias, categoria)) {
+        return;
+    }
+
+    if (!MostrarDialogoNumero(app->hwndMain, "Proteina Minima",
+            "Digite o valor minimo de proteina (g):", &min)) {
+        return;
+    }
+
+    if (!MostrarDialogoNumero(app->hwndMain, "Proteina Maxima",
+            "Digite o valor maximo de proteina (g):", &max)) {
+        return;
+    }
+
+    NoCategoria* cat = buscar_categoria(app->lista_categorias, categoria);
+
+    if (cat == NULL) {
+        MostrarMensagem(app->hwndMain, "Erro", "Categoria nao encontrada!");
+        return;
+    }
+
+    LimparListBox(app->hwndListBox);
+
+    char buffer[512];
+
+    AdicionarItemListBox(app->hwndListBox, "");
+    AdicionarItemListBox(app->hwndListBox, "+========================================================================+");
+    sprintf(buffer, "|  %-70s|", cat->nome);
+    AdicionarItemListBox(app->hwndListBox, buffer);
+    sprintf(buffer, "|  FILTRO: Proteina entre %.1f e %.1f g                                       ", min, max);
+    buffer[73] = '|';
+    buffer[74] = '\0';
+    AdicionarItemListBox(app->hwndListBox, buffer);
+    AdicionarItemListBox(app->hwndListBox, "+========================================================================+");
+    AdicionarItemListBox(app->hwndListBox, "");
+
+    AdicionarCabecalhoTabela(app->hwndListBox);
+
+    if (cat->arvore_proteina != NULL) {
+        AdicionarNosIntervalo(cat->arvore_proteina, app->hwndListBox, min, max);
+    }
+
+    AdicionarSeparador(app->hwndListBox, 110);
+
+    sprintf(buffer, "Filtro aplicado: proteina entre %.1f e %.1f g.", min, max);
+    SetWindowText(app->hwndStatus, buffer);
 }
 
+/* Remover categoria */
 void OnRemoverCategoria(AppData* app) {
-    MostrarMensagem(app->hwndMain, "Em desenvolvimento",
-        "Funcao de remocao de categoria sera implementada em breve!\n\n"
-        "Por enquanto, use as opcoes 1-4 que estao completas.");
+    char categoria[MAX_CATEGORIA];
+
+    if (!MostrarDialogoCategoria(app->hwndMain, app->lista_categorias, categoria)) {
+        return;
+    }
+
+    char mensagem[512];
+    sprintf(mensagem, "Deseja realmente remover a categoria:\n\n%s\n\nTodos os alimentos desta categoria serao removidos!", categoria);
+
+    if (MessageBox(app->hwndMain, mensagem, "Confirmar Remocao",
+            MB_YESNO | MB_ICONWARNING) != IDYES) {
+        return;
+    }
+
+    app->lista_categorias = remover_categoria(app->lista_categorias, categoria);
+    app->dados_modificados = true;
+
+    LimparListBox(app->hwndListBox);
+    AdicionarItemListBox(app->hwndListBox, "");
+    AdicionarItemListBox(app->hwndListBox, "+========================================================================+");
+    AdicionarItemListBox(app->hwndListBox, "|                    CATEGORIA REMOVIDA COM SUCESSO                      |");
+    AdicionarItemListBox(app->hwndListBox, "+========================================================================+");
+    AdicionarItemListBox(app->hwndListBox, "");
+    sprintf(mensagem, "Categoria removida: %s", categoria);
+    AdicionarItemListBox(app->hwndListBox, mensagem);
+    AdicionarItemListBox(app->hwndListBox, "");
+    AdicionarItemListBox(app->hwndListBox, "As alteracoes serao salvas ao sair do programa.");
+
+    sprintf(mensagem, "Categoria '%s' removida com sucesso.", categoria);
+    SetWindowText(app->hwndStatus, mensagem);
 }
 
+/* Remover alimento */
 void OnRemoverAlimento(AppData* app) {
-    MostrarMensagem(app->hwndMain, "Em desenvolvimento",
-        "Funcao de remocao de alimento sera implementada em breve!\n\n"
-        "Por enquanto, use as opcoes 1-4 que estao completas.");
+    char categoria[MAX_CATEGORIA];
+    double numero_double = 0.0;
+
+    if (!MostrarDialogoCategoria(app->hwndMain, app->lista_categorias, categoria)) {
+        return;
+    }
+
+    if (!MostrarDialogoNumero(app->hwndMain, "Numero do Alimento",
+            "Digite o numero do alimento a remover:", &numero_double)) {
+        return;
+    }
+
+    int numero = (int)numero_double;
+
+    NoCategoria* cat = buscar_categoria(app->lista_categorias, categoria);
+
+    if (cat == NULL) {
+        MostrarMensagem(app->hwndMain, "Erro", "Categoria nao encontrada!");
+        return;
+    }
+
+    /* Buscar nome do alimento para confirmacao */
+    NoAlimento* alim = cat->lista_alimentos;
+    char nome_alimento[MAX_DESCRICAO] = "Alimento nao encontrado";
+
+    while (alim != NULL) {
+        if (alim->numero == numero) {
+            strcpy(nome_alimento, alim->descricao);
+            break;
+        }
+        alim = alim->proximo;
+    }
+
+    char mensagem[512];
+    sprintf(mensagem, "Deseja realmente remover o alimento?\n\nNumero: %d\nNome: %s\nCategoria: %s",
+            numero, nome_alimento, categoria);
+
+    if (MessageBox(app->hwndMain, mensagem, "Confirmar Remocao",
+            MB_YESNO | MB_ICONWARNING) != IDYES) {
+        return;
+    }
+
+    remover_alimento_de_categoria(cat, numero);
+    app->dados_modificados = true;
+
+    LimparListBox(app->hwndListBox);
+    AdicionarItemListBox(app->hwndListBox, "");
+    AdicionarItemListBox(app->hwndListBox, "+========================================================================+");
+    AdicionarItemListBox(app->hwndListBox, "|                    ALIMENTO REMOVIDO COM SUCESSO                       |");
+    AdicionarItemListBox(app->hwndListBox, "+========================================================================+");
+    AdicionarItemListBox(app->hwndListBox, "");
+    sprintf(mensagem, "Alimento removido: %d - %s", numero, nome_alimento);
+    AdicionarItemListBox(app->hwndListBox, mensagem);
+    sprintf(mensagem, "Categoria: %s", categoria);
+    AdicionarItemListBox(app->hwndListBox, mensagem);
+    AdicionarItemListBox(app->hwndListBox, "");
+    AdicionarItemListBox(app->hwndListBox, "As arvores binarias foram atualizadas automaticamente.");
+    AdicionarItemListBox(app->hwndListBox, "As alteracoes serao salvas ao sair do programa.");
+
+    sprintf(mensagem, "Alimento %d removido com sucesso.", numero);
+    SetWindowText(app->hwndStatus, mensagem);
 }
 
 /* Processador de mensagens da janela */
