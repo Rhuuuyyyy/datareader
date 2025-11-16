@@ -154,9 +154,9 @@ void OnListarCategorias(AppData* app) {
     }
 
     AdicionarItemListBox(app->hwndListBox, "");
-    AdicionarItemListBox(app->hwndListBox, "╔════════════════════════════════════════════════════════════════════════╗");
-    AdicionarItemListBox(app->hwndListBox, "║              CATEGORIAS DE ALIMENTOS - ORDEM ALFABETICA                ║");
-    AdicionarItemListBox(app->hwndListBox, "╚════════════════════════════════════════════════════════════════════════╝");
+    AdicionarItemListBox(app->hwndListBox, "+========================================================================+");
+    AdicionarItemListBox(app->hwndListBox, "|              CATEGORIAS DE ALIMENTOS - ORDEM ALFABETICA                |");
+    AdicionarItemListBox(app->hwndListBox, "+========================================================================+");
     AdicionarItemListBox(app->hwndListBox, "");
 
     int contador = 1;
@@ -190,13 +190,12 @@ void OnListarAlimentos(AppData* app) {
     LimparListBox(app->hwndListBox);
 
     char buffer[512];
-    sprintf(buffer, "ALIMENTOS DA CATEGORIA: %s", cat->nome);
 
     AdicionarItemListBox(app->hwndListBox, "");
-    AdicionarItemListBox(app->hwndListBox, "╔════════════════════════════════════════════════════════════════════════╗");
-    sprintf(buffer, "║  %-68s║", cat->nome);
+    AdicionarItemListBox(app->hwndListBox, "+========================================================================+");
+    sprintf(buffer, "|  %-70s|", cat->nome);
     AdicionarItemListBox(app->hwndListBox, buffer);
-    AdicionarItemListBox(app->hwndListBox, "╚════════════════════════════════════════════════════════════════════════╝");
+    AdicionarItemListBox(app->hwndListBox, "+========================================================================+");
     AdicionarItemListBox(app->hwndListBox, "");
 
     AdicionarCabecalhoTabela(app->hwndListBox);
@@ -248,11 +247,11 @@ void OnListarPorEnergia(AppData* app) {
     char buffer[512];
 
     AdicionarItemListBox(app->hwndListBox, "");
-    AdicionarItemListBox(app->hwndListBox, "╔════════════════════════════════════════════════════════════════════════╗");
-    sprintf(buffer, "║  %-68s║", cat->nome);
+    AdicionarItemListBox(app->hwndListBox, "+========================================================================+");
+    sprintf(buffer, "|  %-70s|", cat->nome);
     AdicionarItemListBox(app->hwndListBox, buffer);
-    AdicionarItemListBox(app->hwndListBox, "║  ORDENADO POR: ENERGIA (DECRESCENTE) - Usando Arvore Binaria          ║");
-    AdicionarItemListBox(app->hwndListBox, "╚════════════════════════════════════════════════════════════════════════╝");
+    AdicionarItemListBox(app->hwndListBox, "|  ORDENADO POR: ENERGIA (DECRESCENTE) - Usando Arvore Binaria          |");
+    AdicionarItemListBox(app->hwndListBox, "+========================================================================+");
     AdicionarItemListBox(app->hwndListBox, "");
 
     AdicionarCabecalhoTabela(app->hwndListBox);
@@ -277,11 +276,11 @@ void OnListarPorProteina(AppData* app) {
     char buffer[512];
 
     AdicionarItemListBox(app->hwndListBox, "");
-    AdicionarItemListBox(app->hwndListBox, "╔════════════════════════════════════════════════════════════════════════╗");
-    sprintf(buffer, "║  %-68s║", cat->nome);
+    AdicionarItemListBox(app->hwndListBox, "+========================================================================+");
+    sprintf(buffer, "|  %-70s|", cat->nome);
     AdicionarItemListBox(app->hwndListBox, buffer);
-    AdicionarItemListBox(app->hwndListBox, "║  ORDENADO POR: PROTEINA (DECRESCENTE) - Usando Arvore Binaria         ║");
-    AdicionarItemListBox(app->hwndListBox, "╚════════════════════════════════════════════════════════════════════════╝");
+    AdicionarItemListBox(app->hwndListBox, "|  ORDENADO POR: PROTEINA (DECRESCENTE) - Usando Arvore Binaria         |");
+    AdicionarItemListBox(app->hwndListBox, "+========================================================================+");
     AdicionarItemListBox(app->hwndListBox, "");
 
     AdicionarCabecalhoTabela(app->hwndListBox);
