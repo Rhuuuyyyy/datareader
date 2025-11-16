@@ -106,7 +106,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     /* NULL = sem janela pai (MessageBox é independente) */
     MessageBox(NULL,
         "Sistema de Gerenciamento de Alimentos\n\n"        // Título do sistema
-        "Trabalho de Programação Imperativa - RA2\n"      // Identificação acadêmica
+        "Trabalho de Programacao Imperativa - RA2\n"       // Identificação acadêmica
         "Carregando dados...",                             // Status
         "Iniciando",                                       // Título da janela
         MB_OK | MB_ICONINFORMATION);
@@ -140,7 +140,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
         MessageBox(NULL,
             "Falha ao carregar dados.bin!\n\n"
             "Certifique-se de que o arquivo dados.bin\n"
-            "está na mesma pasta que P2_GUI.exe",
+            "esta na mesma pasta que P2_GUI.exe",
             "Erro",                                        // Título
             MB_OK | MB_ICONERROR);
 

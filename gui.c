@@ -16,9 +16,9 @@
  * 1. Listar categorias alfabeticamente
  * 2. Listar alimentos de uma categoria
  * 3. Ordenar alimentos por energia (decrescente)
- * 4. Ordenar alimentos por proteína (decrescente)
+ * 4. Ordenar alimentos por proteina (decrescente)
  * 5. Filtrar alimentos por intervalo de energia
- * 6. Filtrar alimentos por intervalo de proteína
+ * 6. Filtrar alimentos por intervalo de proteina
  * 7. Remover categoria completa
  * 8. Remover alimento específico
  * 9. Sair do sistema
@@ -135,7 +135,7 @@ void AdicionarSeparador(HWND hwndListBox, int tamanho) {
  * FUNCIONAMENTO:
  * Cria uma tabela bonita com:
  * - Linha separadora superior
- * - Cabeçalhos das colunas (Num, Descrição, Energia, Proteína)
+ * - Cabeçalhos das colunas (Num, Descricao, Energia, Proteina)
  * - Linha separadora inferior
  *
  * FORMATO:
@@ -182,7 +182,7 @@ void AdicionarCabecalhoTabela(HWND hwndListBox) {
  * |       SISTEMA DE GERENCIAMENTO DE ALIMENTOS             |
  * |   Trabalho de Programação Imperativa - RA2              |
  * +----------------------------------------------------------+
- * | [1.Listar] [2.Listar] [3.Energia] [4.Proteína]          |
+ * | [1.Listar] [2.Listar] [3.Energia] [4.Proteina]          |
  * | [5.Filtro] [6.Filtro] [7.Remover] [8.Remover] [9.SAIR]  |
  * +----------------------------------------------------------+
  * | Resultados                                               |
@@ -300,7 +300,7 @@ void CriarControles(HWND hwnd) {
         NULL, NULL
     );
 
-    /* BOTÃO 4: Ordenar por Proteína */
+    /* BOTÃO 4: Ordenar por Proteina */
     CreateWindow(
         "BUTTON",
         "4. Ordenar por Proteina",
@@ -326,7 +326,7 @@ void CriarControles(HWND hwnd) {
         NULL, NULL
     );
 
-    /* BOTÃO 6: Filtrar por Proteína */
+    /* BOTÃO 6: Filtrar por Proteina */
     CreateWindow(
         "BUTTON",
         "6. Filtrar Proteina",
@@ -528,7 +528,7 @@ void OnListarCategorias(AppData* app) {
  * - numero: número de identificação
  * - descricao: nome do alimento
  * - energia_kcal: energia em kcal
- * - proteina: proteína em gramas
+ * - proteina: proteina em gramas
  * - proximo: próximo alimento na lista
  */
 void OnListarAlimentos(AppData* app) {
@@ -580,7 +580,7 @@ void OnListarAlimentos(AppData* app) {
         /* %3d = número com 3 dígitos, alinhado à direita */
         /* %-50s = descrição com 50 caracteres, alinhada à esquerda */
         /* %4d = energia com 4 dígitos */
-        /* %6.1f = proteína com 6 caracteres total, 1 casa decimal */
+        /* %6.1f = proteina com 6 caracteres total, 1 casa decimal */
         sprintf(buffer, " %3d | %-50s | %4d kcal | %6.1f g",
                 alim->numero,
                 alim->descricao,
@@ -608,7 +608,7 @@ void OnListarAlimentos(AppData* app) {
  * FUNÇÕES AUXILIARES RECURSIVAS PARA ÁRVORES BINÁRIAS
  *
  * Estas funções percorrem árvores binárias de busca de forma recursiva.
- * São usadas para ordenar alimentos por energia/proteína e para buscar
+ * São usadas para ordenar alimentos por energia/proteina e para buscar
  * intervalos.
  *****************************************************************************/
 
@@ -625,7 +625,7 @@ void OnListarAlimentos(AppData* app) {
  *
  * ESTRUTURA DA ÁRVORE:
  * NoArvore contém:
- * - chave: valor numérico (energia ou proteína)
+ * - chave: valor numérico (energia ou proteina)
  * - alimento: ponteiro para NoAlimento
  * - esquerda: ponteiro para filho esquerdo (valores menores)
  * - direita: ponteiro para filho direito (valores maiores)
@@ -745,7 +745,7 @@ void AdicionarNosIntervalo(NoArvore* raiz, HWND hwndListBox, double min, double 
  * NoCategoria contém:
  * - arvore_energia: árvore binária indexada por energia (kcal)
  * Cada nó da árvore aponta para um alimento
- * Árvore está ordenada: esquerda < raiz < direita
+ * Arvore está ordenada: esquerda < raiz < direita
  * Percurso in-order reverso resulta em ordem decrescente
  */
 void OnListarPorEnergia(AppData* app) {
@@ -798,11 +798,11 @@ void OnListarPorEnergia(AppData* app) {
 /******************************************************************************
  * HANDLER 4: ORDENAR POR PROTEÍNA (DECRESCENTE)
  *
- * Funciona identicamente ao Handler 3, mas usa árvore de proteína.
+ * Funciona identicamente ao Handler 3, mas usa árvore de proteina.
  *****************************************************************************/
 
 /**
- * OnListarPorProteina - Handler do botão "4. Ordenar por Proteína"
+ * OnListarPorProteina - Handler do botão "4. Ordenar por Proteina"
  *
  * @param app: Ponteiro para dados da aplicação
  *
@@ -810,7 +810,7 @@ void OnListarPorEnergia(AppData* app) {
  * Idêntico a OnListarPorEnergia, mas usa arvore_proteina ao invés de arvore_energia.
  *
  * ESTRUTURA DE DADOS:
- * NoCategoria->arvore_proteina: BST indexada por proteína (g)
+ * NoCategoria->arvore_proteina: BST indexada por proteina (g)
  */
 void OnListarPorProteina(AppData* app) {
     char categoria[MAX_CATEGORIA];
@@ -845,7 +845,7 @@ void OnListarPorProteina(AppData* app) {
     /* Cabeçalho da tabela */
     AdicionarCabecalhoTabela(app->hwndListBox);
 
-    /* Percorrer árvore de proteína em ordem decrescente */
+    /* Percorrer árvore de proteina em ordem decrescente */
     if (cat->arvore_proteina != NULL) {
         AdicionarNosArvoreDecrescente(cat->arvore_proteina, app->hwndListBox);
     }
@@ -952,11 +952,11 @@ void OnIntervaloEnergia(AppData* app) {
 /******************************************************************************
  * HANDLER 6: FILTRAR POR INTERVALO DE PROTEÍNA
  *
- * Funciona identicamente ao Handler 5, mas para proteína.
+ * Funciona identicamente ao Handler 5, mas para proteina.
  *****************************************************************************/
 
 /**
- * OnIntervaloProteina - Handler do botão "6. Filtrar Proteína"
+ * OnIntervaloProteina - Handler do botão "6. Filtrar Proteina"
  *
  * @param app: Ponteiro para dados da aplicação
  *
@@ -965,21 +965,21 @@ void OnIntervaloEnergia(AppData* app) {
  */
 void OnIntervaloProteina(AppData* app) {
     char categoria[MAX_CATEGORIA];
-    double min = 0.0;  // Proteína mínima (g)
-    double max = 0.0;  // Proteína máxima (g)
+    double min = 0.0;  // Proteina mínima (g)
+    double max = 0.0;  // Proteina máxima (g)
 
     /* Selecionar categoria */
     if (!MostrarDialogoCategoria(app->hwndMain, app->lista_categorias, categoria)) {
         return;
     }
 
-    /* Perguntar proteína mínima */
+    /* Perguntar proteina mínima */
     if (!MostrarDialogoNumero(app->hwndMain, "Proteina Minima",
             "Digite o valor minimo de proteina (g):", &min)) {
         return;
     }
 
-    /* Perguntar proteína máxima */
+    /* Perguntar proteina máxima */
     if (!MostrarDialogoNumero(app->hwndMain, "Proteina Maxima",
             "Digite o valor maximo de proteina (g):", &max)) {
         return;
@@ -1004,7 +1004,7 @@ void OnIntervaloProteina(AppData* app) {
     sprintf(buffer, "|  %-70s|", cat->nome);
     AdicionarItemListBox(app->hwndListBox, buffer);
 
-    /* Linha com intervalo de proteína */
+    /* Linha com intervalo de proteina */
     sprintf(buffer, "|  FILTRO: Proteina entre %.1f e %.1f g                                       ", min, max);
     buffer[73] = '|';
     buffer[74] = '\0';
@@ -1016,7 +1016,7 @@ void OnIntervaloProteina(AppData* app) {
     /* Cabeçalho da tabela */
     AdicionarCabecalhoTabela(app->hwndListBox);
 
-    /* Buscar na árvore de proteína valores no intervalo */
+    /* Buscar na árvore de proteina valores no intervalo */
     if (cat->arvore_proteina != NULL) {
         AdicionarNosIntervalo(cat->arvore_proteina, app->hwndListBox, min, max);
     }
@@ -1123,7 +1123,7 @@ void OnRemoverCategoria(AppData* app) {
  *
  * IMPORTANTE:
  * - Remove alimento da lista encadeada
- * - Remove alimento das árvores de energia e proteína
+ * - Remove alimento das árvores de energia e proteina
  * - Marca dados_modificados = true para salvar ao sair
  */
 void OnRemoverAlimento(AppData* app) {
