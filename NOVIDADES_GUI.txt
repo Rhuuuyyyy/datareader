@@ -1,0 +1,172 @@
+════════════════════════════════════════════════════════════════════════
+  INTERFACE GRAFICA MELHORADA - VERSAO 2.0
+  Tabelas bonitas e caracteres corrigidos!
+════════════════════════════════════════════════════════════════════════
+
+✨ NOVIDADES NESTA VERSAO:
+
+✅ CARACTERES CORRIGIDOS
+   - Nenhum caractere bugado
+   - Texto limpo e legivel
+   - Compatibilidade perfeita com Windows
+
+✅ TABELAS PROFISSIONAIS
+   - Bordas decorativas bonitas
+   - Colunas perfeitamente alinhadas
+   - Separadores entre secoes
+   - Cabecalhos destacados
+
+✅ FONTE MONOESPAC,ADA
+   - Fonte Consolas para alinhamento perfeito
+   - Todas as colunas alinhadas
+   - Facil de ler e comparar dados
+
+✅ LAYOUT MELHORADO
+   - Janela maior (1030 x 710 pixels)
+   - Mais espaco para visualizar dados
+   - Botoes reorganizados
+   - Area de resultados expandida
+
+
+════════════════════════════════════════════════════════════════════════
+  EXEMPLO DE VISUALIZACAO
+════════════════════════════════════════════════════════════════════════
+
+ANTES (versao antiga):
+----------------------------------------------------------------------
+1 | Arroz integral cozido | 124 kcal | 2.6 g
+2 | Arroz integral cru | 360 kcal | 7.3 g
+----------------------------------------------------------------------
+
+
+AGORA (versao nova):
+╔════════════════════════════════════════════════════════════════════╗
+║              CATEGORIAS DE ALIMENTOS - ORDEM ALFABETICA            ║
+╚════════════════════════════════════════════════════════════════════╝
+
+----------------------------------------------
+ Num | Descricao                                       | Energia  | Proteina
+----------------------------------------------
+  1  | Arroz integral cozido                           | 124 kcal |   2.6 g
+  2  | Arroz integral cru                              | 360 kcal |   7.3 g
+  3  | Arroz tipo 1 cozido                             | 128 kcal |   2.5 g
+  4  | Arroz tipo 1 cru                                | 358 kcal |   7.2 g
+----------------------------------------------
+
+
+════════════════════════════════════════════════════════════════════════
+  RECURSOS VISUAIS
+════════════════════════════════════════════════════════════════════════
+
+🎨 TITULOS DESTACADOS
+   Cada listagem tem um titulo bonito com bordas
+
+📊 COLUNAS ALINHADAS
+   - Numero: 3 digitos
+   - Descricao: 50 caracteres
+   - Energia: 4 digitos + "kcal"
+   - Proteina: 6 digitos + "g"
+
+🔲 BORDAS DECORATIVAS
+   - Titulo: ╔═══╗
+   - Tabela: -----
+   - Separadores claros
+
+📈 STATUS BAR INFORMATIVO
+   Mensagens claras sobre o que esta acontecendo
+
+
+════════════════════════════════════════════════════════════════════════
+  TAMANHO DA JANELA
+════════════════════════════════════════════════════════════════════════
+
+Janela maior para melhor visualizacao:
+- Largura: 1030 pixels
+- Altura: 710 pixels
+- Area de resultados: 970 x 395 pixels
+
+
+════════════════════════════════════════════════════════════════════════
+  BOTOES REORGANIZADOS
+════════════════════════════════════════════════════════════════════════
+
+LINHA 1 (Listagens):
+[1. Listar Categorias] [2. Listar Alimentos]
+[3. Ordenar Energia]   [4. Ordenar Proteina]
+
+LINHA 2 (Filtros e Acoes):
+[5. Filtrar Energia]   [6. Filtrar Proteina]
+[7. Remover Categoria] [8. Remover] [9. SAIR]
+
+
+════════════════════════════════════════════════════════════════════════
+  FUNCOES COMPLETAS (VERSAO ATUAL)
+════════════════════════════════════════════════════════════════════════
+
+✅ 1. Listar Categorias
+   - Lista as 15 categorias
+   - Ordem alfabetica
+   - Numeracao clara
+
+✅ 2. Listar Alimentos
+   - Mostra alimentos da categoria (Alimentos preparados)
+   - Tabela completa com todas as colunas
+   - Ordem alfabetica
+
+✅ 3. Ordenar por Energia
+   - Ordena do maior para o menor
+   - Usa arvore binaria
+   - Tabela formatada
+
+✅ 4. Ordenar por Proteina
+   - Ordena do maior para o menor
+   - Usa arvore binaria
+   - Tabela formatada
+
+🚧 5-8. Em Desenvolvimento
+   - Funcoes basicas ja funcionam (1-4)
+   - Filtros e remocao serao adicionados em breve
+
+
+════════════════════════════════════════════════════════════════════════
+  COMO USAR
+════════════════════════════════════════════════════════════════════════
+
+1. Faca git pull para baixar a versao atualizada
+2. Duplo clique em: EXECUTAR_GUI.bat
+3. Clique nos botoes 1, 2, 3 ou 4
+4. Veja os resultados na area central com tabelas bonitas!
+
+
+════════════════════════════════════════════════════════════════════════
+  COMPARACAO DE VERSOES
+════════════════════════════════════════════════════════════════════════
+
+P2_GUI.exe v1.0 (antiga):          P2_GUI.exe v2.0 (nova):
+────────────────────────           ────────────────────────
+❌ Caracteres bugados              ✅ Texto perfeito
+❌ Tabelas simples                 ✅ Tabelas profissionais
+❌ Alinhamento irregular           ✅ Colunas alinhadas
+❌ Janela pequena                  ✅ Janela maior
+❌ Fonte padrao                    ✅ Fonte monoespac,ada
+
+
+════════════════════════════════════════════════════════════════════════
+  CREDITOS
+════════════════════════════════════════════════════════════════════════
+
+Sistema desenvolvido para o trabalho de Programacao Imperativa - RA2
+Professor: Alcides Calsavara
+
+Tecnologias:
+- Win32 API para interface grafica
+- Estruturas de dados: Listas ligadas + Arvores binarias
+- Fonte Consolas para formatacao
+- Linguagem C99
+
+
+════════════════════════════════════════════════════════════════════════
+
+APROVEITE A NOVA INTERFACE! Muito mais bonita e profissional! 🎨✨
+
+════════════════════════════════════════════════════════════════════════

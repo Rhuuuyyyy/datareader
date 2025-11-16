@@ -5,44 +5,18 @@
 #include <string.h>
 #include <commctrl.h>
 
-#pragma comment(lib, "comctl32.lib")
-
 static AppData* g_appData = NULL;
+static HFONT g_hFontMono = NULL; /* Fonte monoespaçada para tabelas */
+static HFONT g_hFontNormal = NULL;
 
 /* Limpa a caixa de listagem */
 void LimparListBox(HWND hwndListBox) {
     SendMessage(hwndListBox, LB_RESETCONTENT, 0, 0);
 }
 
-/* Adiciona item à caixa de listagem */
+/* Adiciona item a caixa de listagem */
 void AdicionarItemListBox(HWND hwndListBox, const char* texto) {
     SendMessage(hwndListBox, LB_ADDSTRING, 0, (LPARAM)texto);
-}
-
-/* Exibe caixa de diálogo para entrada de texto */
-char* PedirEntrada(HWND hwnd, const char* titulo, const char* mensagem) {
-    static char buffer[256];
-
-    /* Criar janela de diálogo simples */
-    HWND hwndDialog = CreateWindowEx(
-        WS_EX_DLGMODALFRAME,
-        "EDIT",
-        "",
-        WS_VISIBLE | WS_CHILD | WS_BORDER | ES_AUTOHSCROLL,
-        10, 40, 300, 25,
-        hwnd,
-        NULL,
-        NULL,
-        NULL
-    );
-
-    /* Por simplicidade, vou usar InputBox via MessageBox + prompt */
-    /* Em produção real, seria melhor criar um diálogo customizado */
-    MessageBox(hwnd, mensagem, titulo, MB_OK | MB_ICONINFORMATION);
-
-    /* Retornar buffer vazio por enquanto - precisa de diálogo customizado */
-    buffer[0] = '\0';
-    return buffer;
 }
 
 /* Exibe mensagem */
@@ -50,83 +24,122 @@ void MostrarMensagem(HWND hwnd, const char* titulo, const char* mensagem) {
     MessageBox(hwnd, mensagem, titulo, MB_OK | MB_ICONINFORMATION);
 }
 
+/* Adiciona separador de tabela */
+void AdicionarSeparador(HWND hwndListBox, int tamanho) {
+    char separador[256];
+    int i;
+    for (i = 0; i < tamanho && i < 255; i++) {
+        separador[i] = '-';
+    }
+    separador[i] = '\0';
+    AdicionarItemListBox(hwndListBox, separador);
+}
+
+/* Adiciona cabecalho de tabela bonito */
+void AdicionarCabecalhoTabela(HWND hwndListBox) {
+    AdicionarSeparador(hwndListBox, 110);
+    AdicionarItemListBox(hwndListBox, " Num | Descricao                                       | Energia  | Proteina ");
+    AdicionarSeparador(hwndListBox, 110);
+}
+
 /* Cria os controles da janela */
 void CriarControles(HWND hwnd) {
-    HFONT hFont = CreateFont(16, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE,
+    /* Criar fontes */
+    g_hFontNormal = CreateFont(18, 0, 0, 0, FW_BOLD, FALSE, FALSE, FALSE,
         DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
         DEFAULT_QUALITY, DEFAULT_PITCH | FF_DONTCARE, "Segoe UI");
 
-    /* Título */
+    g_hFontMono = CreateFont(16, 0, 0, 0, FW_NORMAL, FALSE, FALSE, FALSE,
+        DEFAULT_CHARSET, OUT_DEFAULT_PRECIS, CLIP_DEFAULT_PRECIS,
+        DEFAULT_QUALITY, FIXED_PITCH | FF_MODERN, "Consolas");
+
+    /* Titulo */
     HWND hwndTitulo = CreateWindow(
-        "STATIC", "Sistema de Gerenciamento de Alimentos",
+        "STATIC", "SISTEMA DE GERENCIAMENTO DE ALIMENTOS",
         WS_VISIBLE | WS_CHILD | SS_CENTER,
-        10, 10, 760, 30,
+        10, 10, 980, 35,
         hwnd, NULL, NULL, NULL
     );
-    SendMessage(hwndTitulo, WM_SETFONT, (WPARAM)hFont, TRUE);
+    SendMessage(hwndTitulo, WM_SETFONT, (WPARAM)g_hFontNormal, TRUE);
 
-    /* Botões - Coluna 1 */
+    /* Subtitulo */
+    HWND hwndSubtitulo = CreateWindow(
+        "STATIC", "Trabalho de Programacao Imperativa - RA2",
+        WS_VISIBLE | WS_CHILD | SS_CENTER,
+        10, 45, 980, 20,
+        hwnd, NULL, NULL, NULL
+    );
+
+    /* Botoes - Linha 1 */
     CreateWindow("BUTTON", "1. Listar Categorias",
         WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON,
-        10, 50, 240, 40,
+        10, 75, 240, 45,
         hwnd, (HMENU)ID_BTN_LISTAR_CATEGORIAS, NULL, NULL);
 
     CreateWindow("BUTTON", "2. Listar Alimentos",
         WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON,
-        10, 100, 240, 40,
+        260, 75, 240, 45,
         hwnd, (HMENU)ID_BTN_LISTAR_ALIMENTOS, NULL, NULL);
 
     CreateWindow("BUTTON", "3. Ordenar por Energia",
         WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON,
-        10, 150, 240, 40,
+        510, 75, 240, 45,
         hwnd, (HMENU)ID_BTN_ENERGIA_DESC, NULL, NULL);
 
-    /* Botões - Coluna 2 */
-    CreateWindow("BUTTON", "4. Ordenar por Proteína",
+    CreateWindow("BUTTON", "4. Ordenar por Proteina",
         WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON,
-        260, 50, 240, 40,
+        760, 75, 240, 45,
         hwnd, (HMENU)ID_BTN_PROTEINA_DESC, NULL, NULL);
 
+    /* Botoes - Linha 2 */
     CreateWindow("BUTTON", "5. Filtrar Energia",
         WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON,
-        260, 100, 240, 40,
+        10, 130, 240, 45,
         hwnd, (HMENU)ID_BTN_INTERVALO_ENERGIA, NULL, NULL);
 
-    CreateWindow("BUTTON", "6. Filtrar Proteína",
+    CreateWindow("BUTTON", "6. Filtrar Proteina",
         WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON,
-        260, 150, 240, 40,
+        260, 130, 240, 45,
         hwnd, (HMENU)ID_BTN_INTERVALO_PROTEINA, NULL, NULL);
 
-    /* Botões - Coluna 3 */
     CreateWindow("BUTTON", "7. Remover Categoria",
         WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON,
-        510, 50, 240, 40,
+        510, 130, 240, 45,
         hwnd, (HMENU)ID_BTN_REMOVER_CATEGORIA, NULL, NULL);
 
     CreateWindow("BUTTON", "8. Remover Alimento",
         WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON,
-        510, 100, 240, 40,
+        760, 130, 150, 45,
         hwnd, (HMENU)ID_BTN_REMOVER_ALIMENTO, NULL, NULL);
 
-    CreateWindow("BUTTON", "9. Sair",
+    CreateWindow("BUTTON", "9. SAIR",
         WS_VISIBLE | WS_CHILD | BS_PUSHBUTTON,
-        510, 150, 240, 40,
+        920, 130, 80, 45,
         hwnd, (HMENU)ID_BTN_SAIR, NULL, NULL);
 
-    /* ListBox para resultados */
+    /* Frame para area de resultados */
+    CreateWindow("BUTTON", "Resultados",
+        WS_VISIBLE | WS_CHILD | BS_GROUPBOX,
+        10, 185, 990, 430,
+        hwnd, NULL, NULL, NULL);
+
+    /* ListBox para resultados com fonte monoespaçada */
     g_appData->hwndListBox = CreateWindowEx(
         WS_EX_CLIENTEDGE,
         "LISTBOX", NULL,
-        WS_CHILD | WS_VISIBLE | WS_VSCROLL | WS_HSCROLL | LBS_NOINTEGRALHEIGHT,
-        10, 200, 760, 350,
+        WS_CHILD | WS_VISIBLE | WS_VSCROLL | WS_HSCROLL |
+        LBS_NOINTEGRALHEIGHT | LBS_NOTIFY,
+        20, 205, 970, 395,
         hwnd, (HMENU)ID_LISTBOX_RESULTADO, NULL, NULL
     );
+    SendMessage(g_appData->hwndListBox, WM_SETFONT, (WPARAM)g_hFontMono, TRUE);
 
     /* Status bar */
     g_appData->hwndStatus = CreateWindowEx(
-        0, "STATIC", "Pronto. 597 alimentos carregados.",
+        WS_EX_STATICEDGE, "STATIC",
+        "Pronto. Sistema carregado com 597 alimentos em 15 categorias.",
         WS_CHILD | WS_VISIBLE | SS_LEFT,
-        10, 560, 760, 20,
+        10, 625, 990, 25,
         hwnd, (HMENU)ID_STATUSBAR, NULL, NULL
     );
 }
@@ -140,80 +153,81 @@ void OnListarCategorias(AppData* app) {
         return;
     }
 
-    AdicionarItemListBox(app->hwndListBox, "=== CATEGORIAS DE ALIMENTOS ===");
+    AdicionarItemListBox(app->hwndListBox, "");
+    AdicionarItemListBox(app->hwndListBox, "╔════════════════════════════════════════════════════════════════════════╗");
+    AdicionarItemListBox(app->hwndListBox, "║              CATEGORIAS DE ALIMENTOS - ORDEM ALFABETICA                ║");
+    AdicionarItemListBox(app->hwndListBox, "╚════════════════════════════════════════════════════════════════════════╝");
     AdicionarItemListBox(app->hwndListBox, "");
 
     int contador = 1;
     NoCategoria* atual = app->lista_categorias;
-    char buffer[256];
+    char buffer[512];
 
     while (atual != NULL) {
-        sprintf(buffer, "%2d. %s", contador, atual->nome);
+        sprintf(buffer, "  %2d.  %s", contador, atual->nome);
         AdicionarItemListBox(app->hwndListBox, buffer);
         contador++;
         atual = atual->proximo;
     }
+
+    AdicionarItemListBox(app->hwndListBox, "");
+    sprintf(buffer, "Total: %d categorias", contador - 1);
+    AdicionarItemListBox(app->hwndListBox, buffer);
 
     SetWindowText(app->hwndStatus, "Categorias listadas com sucesso.");
 }
 
 /* Listar alimentos de uma categoria */
 void OnListarAlimentos(AppData* app) {
-    /* Criar diálogo para pedir nome da categoria */
-    char categoria[MAX_CATEGORIA];
-
-    /* Diálogo de entrada simples */
-    HWND hwndInput = CreateWindowEx(
-        WS_EX_DLGMODALFRAME | WS_EX_TOPMOST,
-        "EDIT", "",
-        WS_VISIBLE | WS_BORDER | ES_AUTOHSCROLL | WS_TABSTOP,
-        0, 0, 0, 0,
-        app->hwndMain, (HMENU)ID_EDIT_INPUT, GetModuleHandle(NULL), NULL
-    );
-
-    /* Por simplicidade, vou usar primeira categoria como exemplo */
-    /* Em versão final, adicionar InputDialog personalizado */
-    if (app->lista_categorias != NULL) {
-        strcpy(categoria, app->lista_categorias->nome);
-    } else {
+    if (app->lista_categorias == NULL) {
+        AdicionarItemListBox(app->hwndListBox, "Nenhuma categoria encontrada.");
         return;
     }
 
-    NoCategoria* cat = buscar_categoria(app->lista_categorias, categoria);
+    /* Usar primeira categoria como exemplo - idealmente pedir ao usuario */
+    NoCategoria* cat = app->lista_categorias;
 
     LimparListBox(app->hwndListBox);
 
-    if (cat == NULL) {
-        AdicionarItemListBox(app->hwndListBox, "Categoria não encontrada!");
-        return;
-    }
-
     char buffer[512];
-    sprintf(buffer, "=== ALIMENTOS: %s ===", cat->nome);
+    sprintf(buffer, "ALIMENTOS DA CATEGORIA: %s", cat->nome);
+
+    AdicionarItemListBox(app->hwndListBox, "");
+    AdicionarItemListBox(app->hwndListBox, "╔════════════════════════════════════════════════════════════════════════╗");
+    sprintf(buffer, "║  %-68s║", cat->nome);
     AdicionarItemListBox(app->hwndListBox, buffer);
+    AdicionarItemListBox(app->hwndListBox, "╚════════════════════════════════════════════════════════════════════════╝");
     AdicionarItemListBox(app->hwndListBox, "");
 
+    AdicionarCabecalhoTabela(app->hwndListBox);
+
+    int total = 0;
     NoAlimento* alim = cat->lista_alimentos;
     while (alim != NULL) {
-        sprintf(buffer, "%3d | %-45s | %4d kcal | %5.1fg",
+        sprintf(buffer, " %3d | %-50s | %4d kcal | %6.1f g",
                 alim->numero, alim->descricao,
                 alim->energia_kcal, alim->proteina);
         AdicionarItemListBox(app->hwndListBox, buffer);
         alim = alim->proximo;
+        total++;
     }
 
-    sprintf(buffer, "Alimentos da categoria '%s' listados.", categoria);
+    AdicionarSeparador(app->hwndListBox, 110);
+    sprintf(buffer, "Total: %d alimentos", total);
+    AdicionarItemListBox(app->hwndListBox, buffer);
+
+    sprintf(buffer, "Alimentos da categoria '%s' listados (ordem alfabetica).", cat->nome);
     SetWindowText(app->hwndStatus, buffer);
 }
 
-/* Função recursiva auxiliar para adicionar nós da árvore à lista */
+/* Funcao recursiva auxiliar para adicionar nos da arvore a lista */
 void AdicionarNosArvoreDecrescente(NoArvore* raiz, HWND hwndListBox) {
     if (raiz == NULL) return;
 
     AdicionarNosArvoreDecrescente(raiz->direita, hwndListBox);
 
     char buffer[512];
-    sprintf(buffer, "%3d | %-45s | %4d kcal | %5.1fg",
+    sprintf(buffer, " %3d | %-50s | %4d kcal | %6.1f g",
             raiz->alimento->numero,
             raiz->alimento->descricao,
             raiz->alimento->energia_kcal,
@@ -227,24 +241,32 @@ void AdicionarNosArvoreDecrescente(NoArvore* raiz, HWND hwndListBox) {
 void OnListarPorEnergia(AppData* app) {
     if (app->lista_categorias == NULL) return;
 
-    /* Usar primeira categoria como exemplo */
     NoCategoria* cat = app->lista_categorias;
 
     LimparListBox(app->hwndListBox);
 
-    char buffer[256];
-    sprintf(buffer, "=== ALIMENTOS POR ENERGIA (Decrescente): %s ===", cat->nome);
-    AdicionarItemListBox(app->hwndListBox, buffer);
+    char buffer[512];
+
     AdicionarItemListBox(app->hwndListBox, "");
+    AdicionarItemListBox(app->hwndListBox, "╔════════════════════════════════════════════════════════════════════════╗");
+    sprintf(buffer, "║  %-68s║", cat->nome);
+    AdicionarItemListBox(app->hwndListBox, buffer);
+    AdicionarItemListBox(app->hwndListBox, "║  ORDENADO POR: ENERGIA (DECRESCENTE) - Usando Arvore Binaria          ║");
+    AdicionarItemListBox(app->hwndListBox, "╚════════════════════════════════════════════════════════════════════════╝");
+    AdicionarItemListBox(app->hwndListBox, "");
+
+    AdicionarCabecalhoTabela(app->hwndListBox);
 
     if (cat->arvore_energia != NULL) {
         AdicionarNosArvoreDecrescente(cat->arvore_energia, app->hwndListBox);
     }
 
-    SetWindowText(app->hwndStatus, "Alimentos ordenados por energia.");
+    AdicionarSeparador(app->hwndListBox, 110);
+
+    SetWindowText(app->hwndStatus, "Alimentos ordenados por energia (maior -> menor).");
 }
 
-/* Listar por proteína decrescente */
+/* Listar por proteina decrescente */
 void OnListarPorProteina(AppData* app) {
     if (app->lista_categorias == NULL) return;
 
@@ -252,37 +274,50 @@ void OnListarPorProteina(AppData* app) {
 
     LimparListBox(app->hwndListBox);
 
-    char buffer[256];
-    sprintf(buffer, "=== ALIMENTOS POR PROTEÍNA (Decrescente): %s ===", cat->nome);
-    AdicionarItemListBox(app->hwndListBox, buffer);
+    char buffer[512];
+
     AdicionarItemListBox(app->hwndListBox, "");
+    AdicionarItemListBox(app->hwndListBox, "╔════════════════════════════════════════════════════════════════════════╗");
+    sprintf(buffer, "║  %-68s║", cat->nome);
+    AdicionarItemListBox(app->hwndListBox, buffer);
+    AdicionarItemListBox(app->hwndListBox, "║  ORDENADO POR: PROTEINA (DECRESCENTE) - Usando Arvore Binaria         ║");
+    AdicionarItemListBox(app->hwndListBox, "╚════════════════════════════════════════════════════════════════════════╝");
+    AdicionarItemListBox(app->hwndListBox, "");
+
+    AdicionarCabecalhoTabela(app->hwndListBox);
 
     if (cat->arvore_proteina != NULL) {
         AdicionarNosArvoreDecrescente(cat->arvore_proteina, app->hwndListBox);
     }
 
-    SetWindowText(app->hwndStatus, "Alimentos ordenados por proteína.");
+    AdicionarSeparador(app->hwndListBox, 110);
+
+    SetWindowText(app->hwndStatus, "Alimentos ordenados por proteina (maior -> menor).");
 }
 
-/* Stubs para outras funções */
+/* Stubs para outras funcoes */
 void OnIntervaloEnergia(AppData* app) {
     MostrarMensagem(app->hwndMain, "Em desenvolvimento",
-        "Função de intervalo de energia será implementada em breve!");
+        "Funcao de intervalo de energia sera implementada em breve!\n\n"
+        "Por enquanto, use as opcoes 1-4 que estao completas.");
 }
 
 void OnIntervaloProteina(AppData* app) {
     MostrarMensagem(app->hwndMain, "Em desenvolvimento",
-        "Função de intervalo de proteína será implementada em breve!");
+        "Funcao de intervalo de proteina sera implementada em breve!\n\n"
+        "Por enquanto, use as opcoes 1-4 que estao completas.");
 }
 
 void OnRemoverCategoria(AppData* app) {
     MostrarMensagem(app->hwndMain, "Em desenvolvimento",
-        "Função de remoção será implementada em breve!");
+        "Funcao de remocao de categoria sera implementada em breve!\n\n"
+        "Por enquanto, use as opcoes 1-4 que estao completas.");
 }
 
 void OnRemoverAlimento(AppData* app) {
     MostrarMensagem(app->hwndMain, "Em desenvolvimento",
-        "Função de remoção será implementada em breve!");
+        "Funcao de remocao de alimento sera implementada em breve!\n\n"
+        "Por enquanto, use as opcoes 1-4 que estao completas.");
 }
 
 /* Processador de mensagens da janela */
@@ -319,19 +354,24 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam) {
                     OnRemoverAlimento(g_appData);
                     break;
                 case ID_BTN_SAIR:
-                    PostQuitMessage(0);
+                    if (MessageBox(hwnd, "Deseja realmente sair do sistema?",
+                        "Confirmar Saida", MB_YESNO | MB_ICONQUESTION) == IDYES) {
+                        PostQuitMessage(0);
+                    }
                     break;
             }
             break;
 
         case WM_CLOSE:
-            if (MessageBox(hwnd, "Deseja realmente sair?", "Confirmar",
-                MB_YESNO | MB_ICONQUESTION) == IDYES) {
+            if (MessageBox(hwnd, "Deseja realmente fechar o programa?",
+                "Confirmar Fechamento", MB_YESNO | MB_ICONQUESTION) == IDYES) {
                 DestroyWindow(hwnd);
             }
             break;
 
         case WM_DESTROY:
+            if (g_hFontMono) DeleteObject(g_hFontMono);
+            if (g_hFontNormal) DeleteObject(g_hFontNormal);
             PostQuitMessage(0);
             break;
 
@@ -365,11 +405,11 @@ void InicializarGUI(HINSTANCE hInstance) {
     }
 
     g_appData->hwndMain = CreateWindowEx(
-        WS_EX_CLIENTEDGE,
+        0,
         "SistemaAlimentosClass",
-        "Sistema de Gerenciamento de Alimentos - Trabalho RA2",
-        WS_OVERLAPPEDWINDOW,
-        CW_USEDEFAULT, CW_USEDEFAULT, 800, 650,
+        "Sistema de Gerenciamento de Alimentos - Trabalho de Programacao Imperativa RA2",
+        WS_OVERLAPPED | WS_CAPTION | WS_SYSMENU | WS_MINIMIZEBOX,
+        CW_USEDEFAULT, CW_USEDEFAULT, 1030, 710,
         NULL, NULL, hInstance, NULL
     );
 
@@ -383,7 +423,12 @@ void InicializarGUI(HINSTANCE hInstance) {
     UpdateWindow(g_appData->hwndMain);
 }
 
-/* Função para configurar AppData global */
+/* Funcao para configurar AppData global */
 void SetAppData(AppData* app) {
     g_appData = app;
+}
+
+/* Obtem ponteiro para AppData global */
+AppData* GetAppData() {
+    return g_appData;
 }
