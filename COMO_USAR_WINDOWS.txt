@@ -1,0 +1,130 @@
+════════════════════════════════════════════════════════════════════════
+  COMO USAR NO WINDOWS - SUPER SIMPLES (SEM INSTALAR NADA!)
+════════════════════════════════════════════════════════════════════════
+
+✅ PRONTO PARA USAR! Você já tem tudo que precisa:
+
+   📁 P2.exe          - Executável do sistema (já compilado!)
+   📁 dados.bin       - Banco de dados com 597 alimentos
+   📁 EXECUTAR_WINDOWS.bat - Script para rodar
+
+════════════════════════════════════════════════════════════════════════
+  PASSO 1: EXECUTAR
+════════════════════════════════════════════════════════════════════════
+
+OPÇÃO A - Automático (mais fácil):
+
+   1. Dê duplo clique em: EXECUTAR_WINDOWS.bat
+
+
+OPÇÃO B - Manual:
+
+   1. Abra o Prompt de Comando nesta pasta
+   2. Digite: P2.exe
+   3. Pressione Enter
+
+
+════════════════════════════════════════════════════════════════════════
+  MENU DO SISTEMA
+════════════════════════════════════════════════════════════════════════
+
+Quando o programa abrir, você terá 9 opções:
+
+1. Listar todas as categorias
+2. Listar alimentos de uma categoria
+3. Listar alimentos por energia (decrescente)
+4. Listar alimentos por proteína (decrescente)
+5. Listar alimentos por intervalo de energia
+6. Listar alimentos por intervalo de proteína
+7. Remover uma categoria
+8. Remover um alimento
+9. Sair
+
+
+════════════════════════════════════════════════════════════════════════
+  EXEMPLOS DE USO
+════════════════════════════════════════════════════════════════════════
+
+Exemplo 1 - Ver alimentos de uma categoria:
+   → Escolha opção: 2
+   → Digite: Cereais e derivados
+   → Verá lista alfabética de todos os cereais
+
+Exemplo 2 - Buscar alimentos com mais energia:
+   → Escolha opção: 3
+   → Digite: Carnes e derivados
+   → Verá alimentos ordenados do maior para o menor em calorias
+
+Exemplo 3 - Filtrar por intervalo de proteína:
+   → Escolha opção: 6
+   → Digite categoria: Leite e derivados
+   → Digite mínimo: 10
+   → Digite máximo: 20
+   → Verá apenas alimentos com 10-20g de proteína
+
+
+════════════════════════════════════════════════════════════════════════
+  SOBRE O P1.exe
+════════════════════════════════════════════════════════════════════════
+
+O arquivo dados.bin já está pronto!
+
+Se você quiser RECRIAR o dados.bin a partir do dados.json:
+   → Você vai precisar compilar P1 com a biblioteca json-c
+   → Veja instruções em: COMPILAR_WINDOWS.md
+   → Mas NÃO é necessário - o dados.bin já funciona!
+
+
+════════════════════════════════════════════════════════════════════════
+  DADOS INCLUÍDOS
+════════════════════════════════════════════════════════════════════════
+
+✅ 597 alimentos
+✅ 15 categorias:
+   • Alimentos preparados
+   • Bebidas (alcoólicas e não alcoólicas)
+   • Carnes e derivados
+   • Cereais e derivados
+   • Frutas e derivados
+   • Gorduras e óleos
+   • Leguminosas e derivados
+   • Leite e derivados
+   • Miscelâneas
+   • Nozes e sementes
+   • Outros alimentos industrializados
+   • Ovos e derivados
+   • Pescados e frutos do mar
+   • Produtos açucarados
+   • Verduras, hortaliças e derivados
+
+✅ Dados por alimento:
+   • Número, Descrição, Categoria
+   • Energia (kcal)
+   • Proteína (g)
+   • Umidade (%)
+   • Carboidrato (g)
+
+
+════════════════════════════════════════════════════════════════════════
+  SOLUÇÃO DE PROBLEMAS
+════════════════════════════════════════════════════════════════════════
+
+❌ "P2.exe não é reconhecido"
+   → Certifique-se de estar na pasta correta
+   → Use: cd C:\Users\rhyan\DataReaderC.v2
+
+❌ "dados.bin não encontrado"
+   → P2.exe e dados.bin devem estar na MESMA pasta
+   → Faça download de ambos do GitHub
+
+❌ "Acesso negado" ou "Windows protegeu seu PC"
+   → Clique em "Mais informações"
+   → Clique em "Executar assim mesmo"
+   → É normal para executáveis baixados da internet
+
+
+════════════════════════════════════════════════════════════════════════
+
+PRONTO! É SÓ EXECUTAR! 🚀
+
+════════════════════════════════════════════════════════════════════════
