@@ -1,0 +1,7 @@
+# Arquivos compilados
+*.o
+P1
+P2
+
+# Arquivo binário de dados (será gerado pelo P1)
+# dados.bin
